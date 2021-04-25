@@ -1,7 +1,6 @@
 const collections = require('./data');
 
-module.exports.calculateTotalPrice = function (...params) {
-  const [numberOfItems, unitPrice, province] = [...params];
+module.exports.calculateTotalPrice = function (numberOfItems, unitPrice, province) {
 
   // Parameters validation 
   if (!numberOfItems || !unitPrice || !province)
@@ -33,11 +32,10 @@ module.exports.calculateTotalPrice = function (...params) {
 
 
 function getDiscountRate(totalPrice) {
-  const discounts = collections.discounts;
 
   if (totalPrice < 1000) return 0;
 
-  const rate = discounts
+  const rate = collections.discounts
     .sort((a, b) => b.orderValue - a.orderValue)
     .filter((item) => item.orderValue <= totalPrice)
     .map((m) => m.discountRate);
@@ -46,8 +44,7 @@ function getDiscountRate(totalPrice) {
 }
 
 function getTaxRate(province) {
-  const taxRates = collections.taxRates;
-  const result = taxRates.find(
+  const result = collections.taxRates.find(
     (item) => item.province === province.toUpperCase()
   );
 
